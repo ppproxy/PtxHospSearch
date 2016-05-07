@@ -1,130 +1,98 @@
 <!DOCTYPE html>
 <html lang="zh-cn-Hans">
-    <head>
-        <meta charset="UTF-8">
-        <title>
-            莆田系医院公共查询服务
-        </title>
-        <script src="https://cn.vuejs.org/js/vue.js">
-        </script>
-        <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js">
-        </script>
-        <script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js">
-        </script>
-    </head>
-    
-    <body>
-        <div id="app">
-            <div class="container">
-                <div class="page-header">
-                    <h1>
-                        莆田系医院公共查询服务
-                        <small>
-                            &nbsp;一个有情怀的GetHosp，让搜索更简单,安全！
-                        </small>
-                    </h1>
-                </div>
-                <div class="col-md-12">
-                    <input type="text" class="form-control" autofocus placeholder="请输入城市名称 如:北京 厦门"
-                    id="keyword" value="{{ keyword }}" v-model="keyword">
-                </div>
-                <br>
-                <br>
-                <br>
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" id="paneltitle">
-                            {{paneltitle}}
-                        </div>
-                        <div class="panel-body">
-                            <li v-for="mirror1f in mirror1">
-                                {{$key}}
-                            </li>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="alert alert-warning">
-                    某些医院只是外包部分科室给莆田系，并不是该医院都是莆田系
-                </div>
-                <div class="alert alert-success">
-                    GetHosp代码托管在
-                    <a href="https://github.com/" target="_blank">
-                        Github
-                    </a>
-                    上，包括数据信息。收录辨别莆田系医院，提供帮助信息。
-                    <br>
-                    保证信息的绝对公开、透明，拒绝删帖、煽动、不正当竞争等一切行为
-                </div>
-                <hr>
-                <p style="text-align:center;">
-                    <br>
-                    该服务搭建在Openshift并通过Nginx Proxy展示给访客
-                    <br>
-                    如果你认为该服务不错,可以考虑
-                    <a href="https://ihuanmeng.com/donate/" target="_blank">
-                        捐助博主
-                    </a>
-                    &nbsp;&nbsp;
-                    <a href="https://ihuanmeng.com/donatethanks" target="_blank">
-                        捐助感谢列表
-                    </a>
-                    <br>
-                    ©2016
-                    <a href="https://twitter.com/HuanMeng_" target="_blank">
-                        HuanMeng
-                    </a>
-                </p>
-            </div>
-        </div>
-    </body>
-    <script>
-        function count(o) {
-            var t = typeof o;
-            if (t == 'string') {
-                return o.length
-            } else if (t == 'object') {
-                var n = 0;
-                for (var i in o) {
-                    n++
-                }
-                return n
+ <head>
+  <meta charset="UTF-8" />
+  <title>莆田系医院公共查询服务</title>
+  <script src="https://cn.vuejs.org/js/vue.js"></script>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+  <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+ </head>
+ <body>
+  <div id="app">
+   <div class="container">
+    <div class="page-header">
+     <h1>莆田系医院公共查询服务<small>&nbsp;一个有情怀的GetHosp，让搜索更简单,安全！</small></h1>
+    </div>
+    <div class="col-md-12"> 
+     <input type="text" class="form-control" autofocus="" placeholder="请输入城市名称 如:北京 厦门" id="keyword" value="{{ keyword }}" v-model="keyword" /> 
+    </div> 
+    <br />
+    <br />
+    <br />
+    <div class="col-md-12">
+     <div class="panel panel-default">
+      <div class="panel-heading" id="paneltitle">
+       {{ paneltitle }}
+      </div>
+      <div class="panel-body">
+       <li v-for="mirror1f in mirror1"> {{ $key }}</li>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="container">
+    <div class="alert alert-warning">
+     某些医院只是外包部分科室给莆田系，并不是该医院都是莆田系
+    </div> 
+    <div class="alert alert-success">
+     GetHosp 代码托管在
+     <a href="https://github.com/" target="_blank">Github</a>上，包括数据信息。收录辨别莆田系医院，提供帮助信息。
+     <br />保证信息的绝对公开、透明，拒绝删帖、煽动、不正当竞争等一切行为
+    </div>
+    <hr />
+    <p style="text-align:center;"><br />该服务搭建在Openshift并通过Nginx Proxy展示给访客<br /> 如果你认为该服务不错,可以考虑<a href="https://ihuanmeng.com/donate/" target="_blank">捐助博主</a>&nbsp;&nbsp;<a href="https://ihuanmeng.com/donatethanks" target="_blank">捐助感谢列表</a><br /> &copy; 2016<a href="https://twitter.com/HuanMeng_" target="_blank">HuanMeng</a></p>
+   </div>
+  </div>
+ </body>
+</html>
+<script>
+function count(o) {
+    var t = typeof o;
+    if (t == "string") {
+        return o.length
+    } else {
+        if (t == "object") {
+            var n = 0;
+            for (var i in o) {
+                n++
             }
-            return false
+            return n
         }
-        var svm = new Vue({
-            el: '#app',
-            data: {
-                mirror1: {},
-                keyword: null,
-                paneltitle: ""
-            }
-        }) svm.$set('paneltitle', "当前搜索关键词:" + svm.keyword);
-        svm.$watch("keyword",
-        function() {
-            svm.$set('paneltitle', "当前搜索关键词:" + svm.keyword);
-            console.log("搜索关键词已更改:" + keyword.value);
-            console.log("提交关键词匹配请求");
-            var xhr = new XMLHttpRequest();
-            xhr.open("get", "hospital_list.json");
-            xhr.send();
-            xhr.onload = function() {
-                var result = JSON.parse(xhr.responseText);
-                if (result[keyword.value] == null) {
-                    console.log("搜索结果为空");
-                    svm.$set('mirror1', {
-                        "什么都没有找到……": "搜索结果为空"
-                    })
-                } else {
-                    svm.$set('paneltitle', "当前搜索关键词:" + svm.keyword + "\t\t\t搜索到了" + count(result[keyword.value]) + "条结果");
-                    console.log(result[keyword.value]);
-                    svm.$set('mirror1', result[keyword.value])
-                }
-            }
-            console.log("获取完毕")
-        });
-    </script>
-
+    }
+    return false
+}
+var svm = new Vue({
+    el: "#app",
+    data: {
+        mirror1: {},
+        keyword: null,
+        paneltitle: ""
+    }
+});
+svm.$set("paneltitle", "当前搜索关键词:" + svm.keyword);
+svm.$watch("keyword",
+function() {
+    svm.$set("paneltitle", "当前搜索关键词:" + svm.keyword);
+    console.log("搜索关键词已更改:" + keyword.value);
+    console.log("提交关键词匹配请求");
+    var xhr = new XMLHttpRequest();
+    xhr.open("get", "hospital_list.json");
+    xhr.send();
+    xhr.onload = function() {
+        var result = JSON.parse(xhr.responseText);
+        if (result[keyword.value] == null) {
+            console.log("搜索结果为空");
+            svm.$set("mirror1", {
+                "什么都没有找到……": "搜索结果为空"
+            })
+        } else {
+            svm.$set("paneltitle", "当前搜索关键词:" + svm.keyword + "\t\t\t搜索到了" + count(result[keyword.value]) + "条结果");
+            console.log(result[keyword.value]);
+            svm.$set("mirror1", result[keyword.value])
+        }
+    };
+    console.log("获取完毕")
+});
+</script>
 </html>
