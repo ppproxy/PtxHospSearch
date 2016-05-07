@@ -5,6 +5,9 @@
 直接克隆代码
 设置cron定时git pull代码
 
+## Demo
+[点击进入](https://ihuanmeng.com/ptx/)
+
 ## 数据来源
 [open-power-workgroup/Hospital](https://github.com/open-power-workgroup/Hospital)
 
