@@ -14,33 +14,37 @@
     <div class="page-header">
      <h1>莆田系医院公共查询服务<small>&nbsp;让搜索更简单,安全！</small></h1>
     </div>
-    <div class="col-md-12"> 
-     <input type="text" class="form-control" autofocus="" placeholder="请输入城市名称 如:北京 厦门" id="keyword" value="{{ keyword }}" v-model="keyword" /> 
-    </div> 
+    <div class="col-md-12">
+     <input type="text" class="form-control" autofocus="" placeholder="请输入城市名称 如:北京 厦门" id="keyword" value="{{ keyword }}" v-model="keyword" />
+    </div>
     <br />
     <br />
     <br />
     <div class="col-md-12">
      <div class="panel panel-default">
       <div class="panel-heading" id="paneltitle">
-       {{ paneltitle }}
+        {{ paneltitle }}
       </div>
       <div class="panel-body">
-       <li v-for="mirror1f in mirror1" style="word-break:break-all">{{ $index+1 }}.&nbsp; {{ $key }} 
-	   <span v-if="mirror1f.网址" v-for="murl in mirror1f.网址"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>网址:</b> {{ murl }}</span>
-	   <span v-if="mirror1f.电话" v-for="mtel in mirror1f.电话"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>电话:</b> {{ mtel }}</span>
-	   <span v-if="mirror1f.地址" v-for="maddr in mirror1f.地址"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>地址:</b> {{ maddr }}</span>
-	   <span v-if="mirror1f.用户反馈" v-for="mfeedback in mirror1f.用户反馈"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>用户反馈:</b> {{ mfeedback }}</span> 
-	   <br><br>
-	   </li>
+       <li v-for="mirror1f in mirror1" style="word-break:break-all">{{ $index+1 }}.&nbsp; {{ $key }} <span v-if="mirror1f.网址" v-for="murl in mirror1f.网址"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>网址:</b> {{ murl }}</span> <span v-if="mirror1f.电话" v-for="mtel in mirror1f.电话"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>电话:</b> {{ mtel }}</span> <span v-if="mirror1f.地址" v-for="maddr in mirror1f.地址"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>地址:</b> {{ maddr }}</span> <span v-if="mirror1f.用户反馈" v-for="mfeedback in mirror1f.用户反馈"><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>用户反馈:</b> {{ mfeedback }}</span> <br /><br /> </li>
+      </div>
+     </div>
+    </div> 
+    <div class="col-md-12">
+     <div class="panel panel-default">
+      <div class="panel-heading" id="paneltitle">
+        所有可搜索关键词:(本站的查询为精确查询,即必须输入可完整匹配的关键词)
+      </div>
+      <div class="panel-body"> 
+       <span v-for="d in alljsondata"><button class="btn btn-default btn-sm" v-on:click="FastKeyword($key)">{{ $key }}</button></span>
       </div>
      </div>
     </div>
    </div>
    <div class="container">
     <div class="alert alert-warning">
-     某些医院只是外包部分科室给莆田系，并不是该医院都是莆田系
-    </div> 
+      某些医院只是外包部分科室给莆田系，并不是该医院都是莆田系
+    </div>
     <div class="alert alert-success">
       程序代码托管在
      <a href="https://github.com/HuanMeng0/PtxHospSearch" target="_blank">Github</a>上，包括数据信息。收录辨别莆田系医院，提供帮助信息。
@@ -73,34 +77,42 @@ var svm = new Vue({
     data: {
         mirror1: {},
         keyword: null,
-        paneltitle: ""
+        paneltitle: "",
+        alljsondata: {}
+    },
+    methods: {
+        FastKeyword: function(kw) {
+            this.$set("keyword", kw);
+            console.log("快捷搜索-搜索关键词已更改:" + kw)
+        }
     }
 });
+var xhr = new XMLHttpRequest();
+xhr.open("get", "hospital_list.json");
+xhr.send();
+xhr.onload = function() {
+    var alldata = JSON.parse(xhr.responseText);
+    svm.$set("alljsondata", alldata)
+};
 svm.$set("paneltitle", "当前搜索关键词:" + svm.keyword);
 svm.$watch("keyword",
 function() {
-	svm.$set("mirror1", {
-                "搜索中……请耐心等候一会": "搜索中……请耐心等候一会"
-            })
+    svm.$set("mirror1", {
+        "搜索中……请耐心等候一会": "搜索中……请耐心等候一会"
+    });
     svm.$set("paneltitle", "当前搜索关键词:" + svm.keyword);
     console.log("搜索关键词已更改:" + keyword.value);
     console.log("提交关键词匹配请求");
-    var xhr = new XMLHttpRequest();
-    xhr.open("get", "hospital_list.json");
-    xhr.send();
-    xhr.onload = function() {
-        var result = JSON.parse(xhr.responseText);
-        if (result[keyword.value] == null) {
-            console.log("搜索结果为空");
-            svm.$set("mirror1", {
-                "什么都没有找到……": "搜索结果为空"
-            })
-        } else {
-            svm.$set("paneltitle", "当前搜索关键词:" + svm.keyword + "\t\t\t搜索到了" + count(result[keyword.value]) + "条结果");
-            console.log(result[keyword.value]);
-            svm.$set("mirror1", result[keyword.value])
-        }
-    };
+    if (svm.alljsondata[keyword.value] == null) {
+        console.log("搜索结果为空");
+        svm.$set("mirror1", {
+            "什么都没有找到……": "搜索结果为空"
+        })
+    } else {
+        svm.$set("paneltitle", "当前搜索关键词:" + svm.keyword + "\t\t\t搜索到了" + count(svm.alljsondata[keyword.value]) + "条结果");
+        console.log(svm.alljsondata[keyword.value]);
+        svm.$set("mirror1", svm.alljsondata[keyword.value])
+    }
     console.log("获取完毕")
 });
 </script>
